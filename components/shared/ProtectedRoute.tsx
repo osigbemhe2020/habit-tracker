@@ -140,7 +140,7 @@ const DeleteModal = styled.div`
   z-index: 50;
   display: grid;
   place-items: center;
-  background: hsl(var(--overlay));
+  background: rgba(0, 0, 0, 0.5);
   padding: 1rem;
 `;
 
@@ -148,8 +148,8 @@ const DeleteModalContent = styled.div`
   width: 100%;
   max-width: 20rem;
   border-radius: 1rem;
-  border: 1px solid hsl(var(--border));
-  background: hsl(var(--card));
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
   padding: 1.25rem;
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
 `;
@@ -157,13 +157,14 @@ const DeleteModalContent = styled.div`
 const DeleteModalTitle = styled.h2`
   font-size: 1.25rem;
   font-weight: 900;
-  color: hsl(var(--card-foreground));
+  color: #1f2937;
+  margin-bottom: 0.5rem;
 `;
 
 const DeleteModalText = styled.p`
   margin-top: 0.5rem;
   font-size: 0.875rem;
-  color: hsl(var(--muted-foreground));
+  color: #6b7280;
 `;
 
 const DeleteModalButtons = styled.div`
