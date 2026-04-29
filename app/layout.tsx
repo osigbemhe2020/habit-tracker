@@ -12,30 +12,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Habit Tracker",
-  description: "Track your daily habits and build consistency",
+
+export const metadata = {
   manifest: "/manifest.json",
-  themeColor: "#22a064",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: "Habits",
-  },
-  formatDetection: {
-    telephone: false,
-  },
-  openGraph: {
-    type: "website",
-    siteName: "Habit Tracker",
-    title: "Habit Tracker",
-    description: "Track your daily habits and build consistency",
-  },
-  twitter: {
-    card: "summary",
-    title: "Habit Tracker",
-    description: "Track your daily habits and build consistency",
-  },
+   themeColor: "#000000",
 };
 
 export default function RootLayout({

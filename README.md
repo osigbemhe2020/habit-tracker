@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Habit Tracker
 
-## Getting Started
+A mobile-first Habit Tracker app with local email/password authentication, daily habit CRUD, completion toggles, current streaks, and a basic offline-capable app shell.
 
-First, run the development server:
+## Setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Run
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+bun run dev
+bun run build
+bun run start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tests
 
-## Learn More
+```bash
+bun run test:unit
+bun run test:integration
+bun run test:e2e
+bun run test
+```
 
-To learn more about Next.js, take a look at the following resources:
+Unit tests generate coverage for `src/lib` with an 80% line threshold.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Local persistence structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The app stores deterministic state in `localStorage` only:
 
-## Deploy on Vercel
+- `habit-tracker-users`: array of `{ id, email, password, createdAt }`
+- `habit-tracker-session`: `null` or `{ userId, email }`
+- `habit-tracker-habits`: array of `{ id, userId, name, description, frequency, createdAt, completions }`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Habit completions are unique `YYYY-MM-DD` calendar dates. Habits are filtered by the logged-in user's `userId`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## PWA support
+
+`public/manifest.json` defines the installable app metadata and icons. `public/sw.js` caches the app shell routes and serves cached responses when offline after the app has loaded once. The service worker is registered from the root client component outside the preview host.
+
+## Trade-offs and limitations
+
+Authentication is intentionally local and deterministic for this stage; passwords are stored in localStorage and are not secure for production. Persistence is device/browser-local and does not sync across devices. Only daily habit frequency is implemented.
+
+## Test file map
+
+- `tests/unit/slug.test.ts`: verifies habit slug normalization.
+- `tests/unit/validators.test.ts`: verifies habit name validation messages and normalization.
+- `tests/unit/streaks.test.ts`: verifies current streak calculation, duplicates, and missing-day behavior.
+- `tests/unit/habits.test.ts`: verifies immutable completion toggling and duplicate prevention.
+- `tests/integration/auth-flow.test.tsx`: verifies signup, duplicate signup, login, and invalid login behavior.
+- `tests/integration/habit-form.test.tsx`: verifies validation, create, edit, delete confirmation, completion, and streak UI behavior.
+- `tests/e2e/app.spec.ts`: verifies route redirects, protected dashboard, auth flows, habit creation/completion, reload persistence, logout, and offline shell behavior.

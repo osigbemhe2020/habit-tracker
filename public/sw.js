@@ -1,38 +1,59 @@
-const CACHE_NAME = "habit-tracker-shell-v1";
+const CACHE_NAME = "habit-tracker-v1";
+
+// Only cache stable routes (NO _next/static files)
 const APP_SHELL = [
   "/",
-  "/Login", 
-  "/SignUp",
-  "/Dashboard",
+  "/login",
+  "/signup",
+  "/dashboard",
   "/manifest.json",
-  "/_next/static/css/app/layout.css",
-  "/_next/static/chunks/app/layout.js",
-  "/_next/static/chunks/webpack.js",
-  "/_next/static/chunks/main-app.js",
 ];
 
+// Install → cache app shell
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(APP_SHELL);
+    })
+  );
   self.skipWaiting();
 });
 
+// Activate → clean old caches
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))),
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys
+          .filter((key) => key !== CACHE_NAME)
+          .map((key) => caches.delete(key))
+      )
+    )
   );
   self.clients.claim();
 });
 
+// Fetch → cache-first strategy with fallback
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
   event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-        return response;
-      })
-      .catch(() => caches.match(event.request).then((cached) => cached || caches.match("/"))),
+    caches.match(event.request).then((cached) => {
+      if (cached) return cached;
+
+      return fetch(event.request)
+        .then((response) => {
+          // Save a copy in cache
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, clone);
+          });
+          return response;
+        })
+        .catch(() => {
+          // Offline fallback → return homepage shell
+          return caches.match("/");
+        });
+    })
   );
 });
