@@ -1,7 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  turbopack: {
+    root: __dirname,
+  },
+  compiler: {
+    styledComponents: true,
+  },
 };
 
 export default nextConfig;
+

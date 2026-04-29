@@ -1,12 +1,32 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #3b82f6;
+  --destructive: #ef4444;
+  --muted: #f9fafb;
+  --muted-foreground: #6b7280;
+  --accent: #f3f4f6;
+  --accent-foreground: #111827;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --card: #1a1a1a;
+    --card-foreground: #ededed;
+    --border: #374151;
+    --input: #374151;
+    --ring: #60a5fa;
+    --destructive: #f87171;
+    --muted: #1f2937;
+    --muted-foreground: #9ca3af;
+    --accent: #374151;
+    --accent-foreground: #f9fafb;
   }
 }
 
