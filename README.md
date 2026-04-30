@@ -5,27 +5,27 @@ A mobile-first Habit Tracker app with local email/password authentication, daily
 ## Setup
 
 ```bash
-bun install
+npm install
 ```
 
 ## Run
 
 ```bash
-bun run dev
-bun run build
-bun run start
+npm run dev
+npm run build
+npm run start
 ```
 
 ## Tests
 
 ```bash
-bun run test:unit
-bun run test:integration
-bun run test:e2e
-bun run test
+npm run test:unit
+npm run test:integration
+npm run test:e2e
+npm run test
 ```
 
-Unit tests generate coverage for `src/lib` with an 80% line threshold.
+
 
 ## Local persistence structure
 
